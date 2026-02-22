@@ -15,18 +15,18 @@ An interactive map exploring the etymology of Christmas greetings across Europea
 
 ---
 
-### 📊 [GDP per Capita vs GINI Index — EU Countries](./EU_GINI_GDPPC/)
+### 📊 [GDP per Capita vs GINI Index — EU Countries](./eu-gini-gdppc/)
 *Animated bubble chart - EU economic inequality over time*
 
 An animated scatter plot comparing GDP per capita and income inequality (GINI index) across EU countries, with bubble size representing population.
 
-![GDP per Capita vs GINI Index](./EU_GINI_GDPPC/gdp_gini_eu.gif)
+![GDP per Capita vs GINI Index](./eu-gini-gdppc/gdp_gini_eu.gif)
 
 ---
 
-### ❄️ [SQL Snow](./sql_snow/)
+### ❄️ [SQL Snow](./sql-snow/)
 *A creative ASCII snowfall animation built in Python and SQL*
 
 A generative visual experiment producing a falling snow effect using ASCII characters - a cheap replacement for no white Christmas 😄.
 
-![SQL Snow](./sql_snow/snow.gif)
+![SQL Snow](./sql-snow/snow.gif)
