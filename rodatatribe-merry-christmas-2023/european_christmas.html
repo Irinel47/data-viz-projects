@@ -1,0 +1,1033 @@
+<!DOCTYPE html>
+<html>
+<head>
+    
+    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
+    
+        <script>
+            L_NO_TOUCH = false;
+            L_DISABLE_3D = false;
+        </script>
+    
+    <style>html, body {width: 100%;height: 100%;margin: 0;padding: 0;}</style>
+    <style>#map {position:absolute;top:0;bottom:0;right:0;left:0;}</style>
+    <script src="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.js"></script>
+    <script src="https://code.jquery.com/jquery-3.7.1.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/js/bootstrap.bundle.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.js"></script>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/leaflet@1.9.3/dist/leaflet.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@5.2.2/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://netdna.bootstrapcdn.com/bootstrap/3.0.0/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/@fortawesome/fontawesome-free@6.2.0/css/all.min.css"/>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/Leaflet.awesome-markers/2.0.2/leaflet.awesome-markers.css"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/python-visualization/folium/folium/templates/leaflet.awesome.rotate.min.css"/>
+    
+            <meta name="viewport" content="width=device-width,
+                initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+            <style>
+                #map_1446bc7ba92d57315768085466072a3d {
+                    position: relative;
+                    width: 100.0%;
+                    height: 100.0%;
+                    left: 0.0%;
+                    top: 0.0%;
+                }
+                .leaflet-container { font-size: 1rem; }
+            </style>
+        
+</head>
+<body>
+    
+    
+     <h3 style="position: fixed; 
+     top: 10px; right: 80px; width: 300px; height: 150px; 
+     z-index: 9999; font-size: 60px; color: #410C0C; font-family: Trebuchet MS, sans-serif; font-weight: bold;
+     text-align: center;">
+     Merry Christmas in <br>European <br>Languages
+     </h3>
+     
+    
+     <div style="position: fixed; 
+     bottom: 50px; left: 50px; width: 200px; height: 220px; 
+     border: 2px solid grey; z-index: 9999; font-size: 15px; font-family: Trebuchet MS, sans-serif; font-weight: bold;
+     background-color: white; padding: 10px; text-align: left;
+     ">
+     <h4 style="font-size: 16px; color: #410C0C; margin-bottom: 8px; color: #410C0C; font-family: Trebuchet MS, sans-serif; font-weight: bold;">
+     Is the name of Christ a reference in the greeting?</h4>
+     <p style="color: green; margin: 5px 0;">&#9632;&nbsp;&nbsp;Reference to the name of Christ (15)</p>
+     <p style="color: red; margin: 5px 0;">&#9632;&nbsp;&nbsp;Not a reference to the name of Christ (28)</p>
+     <p style="color: orange; margin: 5px 0;">&#9632;&nbsp;&nbsp;Both used (4)</p>
+     </div>
+     
+    
+            <div class="folium-map" id="map_1446bc7ba92d57315768085466072a3d" ></div>
+        
+</body>
+<script>
+    
+    
+            var map_1446bc7ba92d57315768085466072a3d = L.map(
+                "map_1446bc7ba92d57315768085466072a3d",
+                {
+                    center: [52.5, 15.0],
+                    crs: L.CRS.EPSG3857,
+                    zoom: 4,
+                    zoomControl: true,
+                    preferCanvas: false,
+                }
+            );
+
+            
+
+        
+    
+            var tile_layer_e631776391bd708a938e44869074f566 = L.tileLayer(
+                "https://tile.openstreetmap.org/{z}/{x}/{y}.png",
+                {"attribution": "\u0026copy; \u003ca href=\"https://www.openstreetmap.org/copyright\"\u003eOpenStreetMap\u003c/a\u003e contributors", "detectRetina": false, "maxNativeZoom": 19, "maxZoom": 19, "minZoom": 0, "noWrap": false, "opacity": 1, "subdomains": "abc", "tms": false}
+            );
+        
+    
+            tile_layer_e631776391bd708a938e44869074f566.addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var marker_d37676d2702a8e1c328fd70b6982b173 = L.marker(
+                [41.153332, 20.168331],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_9cda59147883fc5cd4de0e524c4c98fd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_d37676d2702a8e1c328fd70b6982b173.setIcon(icon_9cda59147883fc5cd4de0e524c4c98fd);
+        
+    
+            marker_d37676d2702a8e1c328fd70b6982b173.bindTooltip(
+                `<div>
+                     Albania:  Gëzuar Krishtlindjet - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_ef9469a20568a24bba3cc3ba7d65d343 = L.marker(
+                [42.546245, 1.601554],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_3ae0c6eb7b6c7c59242071cf97f693ee = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_ef9469a20568a24bba3cc3ba7d65d343.setIcon(icon_3ae0c6eb7b6c7c59242071cf97f693ee);
+        
+    
+            marker_ef9469a20568a24bba3cc3ba7d65d343.bindTooltip(
+                `<div>
+                     Andorra:  Bon Nadal - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_91848a7930639330bfed494267b4f4a2 = L.marker(
+                [47.516231, 14.550072],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_270c3dbbdaf00e8618d934b69666715f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_91848a7930639330bfed494267b4f4a2.setIcon(icon_270c3dbbdaf00e8618d934b69666715f);
+        
+    
+            marker_91848a7930639330bfed494267b4f4a2.bindTooltip(
+                `<div>
+                     Austria:  Fröhliche Weihnachten or Frohe Weihnachten - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_886f2eca393ab4574dad2fadeeb6d335 = L.marker(
+                [53.709807, 27.953389],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_a0964aeaa77993ef66c4732875aa5de6 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_886f2eca393ab4574dad2fadeeb6d335.setIcon(icon_a0964aeaa77993ef66c4732875aa5de6);
+        
+    
+            marker_886f2eca393ab4574dad2fadeeb6d335.bindTooltip(
+                `<div>
+                     Belarus:  з Калядамі or з Божым Нараджэннем - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0603a5760acb41f64cf4c40cf0657942 = L.marker(
+                [50.503887, 4.469936],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_8612abb01fd6780b2ab3f84806f3d842 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_0603a5760acb41f64cf4c40cf0657942.setIcon(icon_8612abb01fd6780b2ab3f84806f3d842);
+        
+    
+            marker_0603a5760acb41f64cf4c40cf0657942.bindTooltip(
+                `<div>
+                     Belgium:  Vrolijk Kerstfeest/Joyeux Noël - Both used
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_1c964950555331db8acabe7787bb4296 = L.marker(
+                [43.915886, 17.679076],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_9a2a0314ddd935e23215a95ed923fc72 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_1c964950555331db8acabe7787bb4296.setIcon(icon_9a2a0314ddd935e23215a95ed923fc72);
+        
+    
+            marker_1c964950555331db8acabe7787bb4296.bindTooltip(
+                `<div>
+                     Bosnia and Herzegovina:  Sretan Božić - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0cdd5b5be793a4948d023141753e4d43 = L.marker(
+                [42.733883, 25.48583],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_4c7b1d51d8f3738865e025b51ac59d99 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_0cdd5b5be793a4948d023141753e4d43.setIcon(icon_4c7b1d51d8f3738865e025b51ac59d99);
+        
+    
+            marker_0cdd5b5be793a4948d023141753e4d43.bindTooltip(
+                `<div>
+                     Bulgaria:  Весела Коледа or Честито Рождество Христово - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c24197e2716f7955696704508916190d = L.marker(
+                [45.1, 15.2],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_c96f06d2fa6de11da0bbc50e7a36e3be = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_c24197e2716f7955696704508916190d.setIcon(icon_c96f06d2fa6de11da0bbc50e7a36e3be);
+        
+    
+            marker_c24197e2716f7955696704508916190d.bindTooltip(
+                `<div>
+                     Croatia:  Sretan Božić - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f13ee646102135fb1cdbb59cf31017e2 = L.marker(
+                [35.126413, 33.429859],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_e46f5fab21418977c95e2102c60d238d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_f13ee646102135fb1cdbb59cf31017e2.setIcon(icon_e46f5fab21418977c95e2102c60d238d);
+        
+    
+            marker_f13ee646102135fb1cdbb59cf31017e2.bindTooltip(
+                `<div>
+                     Cyprus:  Καλά Χριστούγεννα/Mutlu Noeller - Both used
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_90f2725d9658d07a8ca752e130ac8f89 = L.marker(
+                [49.817492, 15.472962],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_d8c05634574ce2176d58f1bae9f2d86a = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_90f2725d9658d07a8ca752e130ac8f89.setIcon(icon_d8c05634574ce2176d58f1bae9f2d86a);
+        
+    
+            marker_90f2725d9658d07a8ca752e130ac8f89.bindTooltip(
+                `<div>
+                     Czech Republic:  Veselé Vánoce - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_934db47b045a8b560bda3af55f798b12 = L.marker(
+                [56.26392, 9.501785],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_539df83ce627c15a4388544d3a8390fa = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_934db47b045a8b560bda3af55f798b12.setIcon(icon_539df83ce627c15a4388544d3a8390fa);
+        
+    
+            marker_934db47b045a8b560bda3af55f798b12.bindTooltip(
+                `<div>
+                     Denmark:  God jul or Glædelig jul - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d8127a7df3198504a5fb2b53ba79e8ec = L.marker(
+                [52.132633, 5.291266],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_779ac6ff24653d8905ad31e22102ff47 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_d8127a7df3198504a5fb2b53ba79e8ec.setIcon(icon_779ac6ff24653d8905ad31e22102ff47);
+        
+    
+            marker_d8127a7df3198504a5fb2b53ba79e8ec.bindTooltip(
+                `<div>
+                     Netherlands:  Vrolijk Kerstfeest - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c7937df02c90f12afa26d1a22a191df6 = L.marker(
+                [55.378051, -3.435973],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_ab4420bd52e8f041140912521e13dae1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_c7937df02c90f12afa26d1a22a191df6.setIcon(icon_ab4420bd52e8f041140912521e13dae1);
+        
+    
+            marker_c7937df02c90f12afa26d1a22a191df6.bindTooltip(
+                `<div>
+                     United Kingdom:  Merry Christmas or Happy Christmas - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_763ba8bbcdd392aa3741f1628b93ae7e = L.marker(
+                [58.595272, 25.013607],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_f018b18d0009edc5ebd384829ad5a4ff = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_763ba8bbcdd392aa3741f1628b93ae7e.setIcon(icon_f018b18d0009edc5ebd384829ad5a4ff);
+        
+    
+            marker_763ba8bbcdd392aa3741f1628b93ae7e.bindTooltip(
+                `<div>
+                     Estonia:  Häid jõule - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_154415993b7350ffa5b1d475e8106699 = L.marker(
+                [61.92411, 25.748151],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_73617708d65a0916eaeca8f7f4b051d5 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_154415993b7350ffa5b1d475e8106699.setIcon(icon_73617708d65a0916eaeca8f7f4b051d5);
+        
+    
+            marker_154415993b7350ffa5b1d475e8106699.bindTooltip(
+                `<div>
+                     Finland:  Hyvää joulua - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_fc9a09104a523160885489cfa138df62 = L.marker(
+                [46.227638, 2.213749],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_1d52d84096340c2c093db7ddce301a15 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_fc9a09104a523160885489cfa138df62.setIcon(icon_1d52d84096340c2c093db7ddce301a15);
+        
+    
+            marker_fc9a09104a523160885489cfa138df62.bindTooltip(
+                `<div>
+                     France:  Joyeux Noël - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_898d43352ac3dd849e1347888b1cee0b = L.marker(
+                [51.165691, 10.451526],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_1bca597eeae62068b686264f4e7c6fd3 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_898d43352ac3dd849e1347888b1cee0b.setIcon(icon_1bca597eeae62068b686264f4e7c6fd3);
+        
+    
+            marker_898d43352ac3dd849e1347888b1cee0b.bindTooltip(
+                `<div>
+                     Germany:  Fröhliche Weihnachten or Frohe Weihnachten - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5bb691bab738330b39a92d3ac97cf56b = L.marker(
+                [39.074208, 21.824312],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_7e4e4961b19895264b5e63e0ef9a9ebd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_5bb691bab738330b39a92d3ac97cf56b.setIcon(icon_7e4e4961b19895264b5e63e0ef9a9ebd);
+        
+    
+            marker_5bb691bab738330b39a92d3ac97cf56b.bindTooltip(
+                `<div>
+                     Greece:  Καλά Χριστούγεννα - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7f542b9cae43e82a2fd37323d3b922a4 = L.marker(
+                [47.162494, 19.503304],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_7d583752c52840a535fd293f3bca70f9 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_7f542b9cae43e82a2fd37323d3b922a4.setIcon(icon_7d583752c52840a535fd293f3bca70f9);
+        
+    
+            marker_7f542b9cae43e82a2fd37323d3b922a4.bindTooltip(
+                `<div>
+                     Hungary:  Boldog karácsonyt - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_47b5f6904cd05b35a20d8df50e592889 = L.marker(
+                [64.963051, -19.020835],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_a96fc63f693945798f0bbe34ddd0c36f = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_47b5f6904cd05b35a20d8df50e592889.setIcon(icon_a96fc63f693945798f0bbe34ddd0c36f);
+        
+    
+            marker_47b5f6904cd05b35a20d8df50e592889.bindTooltip(
+                `<div>
+                     Iceland:  Gleðileg jól - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_3d120d5726896eeee3e121720a5a5687 = L.marker(
+                [53.41291, -8.24389],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_bbd2aead2431280eb17b54da536953b4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_3d120d5726896eeee3e121720a5a5687.setIcon(icon_bbd2aead2431280eb17b54da536953b4);
+        
+    
+            marker_3d120d5726896eeee3e121720a5a5687.bindTooltip(
+                `<div>
+                     Ireland:  Nollaig Shona + Dhuit (singular) or Daoibh (plural) - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9e41144459618afc6f110e6598c9679d = L.marker(
+                [41.87194, 12.56738],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_164a75b6971aee4e0604bfbb873db294 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_9e41144459618afc6f110e6598c9679d.setIcon(icon_164a75b6971aee4e0604bfbb873db294);
+        
+    
+            marker_9e41144459618afc6f110e6598c9679d.bindTooltip(
+                `<div>
+                     Italy:  Buon Natale - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5bd4aac8050ea1f3d2fecc6bf99be676 = L.marker(
+                [42.602636, 20.902977],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_2fb23c16811ab0c0b939df671bce1c02 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_5bd4aac8050ea1f3d2fecc6bf99be676.setIcon(icon_2fb23c16811ab0c0b939df671bce1c02);
+        
+    
+            marker_5bd4aac8050ea1f3d2fecc6bf99be676.bindTooltip(
+                `<div>
+                     Kosovo:  Srećan Božić/Mutlu Noeller/Sretan Božić - Both used
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_6d9f0093592ee3880e4048eba8aeeb45 = L.marker(
+                [56.879635, 24.603189],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_32e4e1da6d485cc31d84594c22a94d04 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_6d9f0093592ee3880e4048eba8aeeb45.setIcon(icon_32e4e1da6d485cc31d84594c22a94d04);
+        
+    
+            marker_6d9f0093592ee3880e4048eba8aeeb45.bindTooltip(
+                `<div>
+                     Latvia:  Priecīgus Ziemassvētkus - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f2a0c58e17dd325c633dfa83ccc1e36f = L.marker(
+                [47.166, 9.555373],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_708fb975ba66d0fec207be9d605c8729 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_f2a0c58e17dd325c633dfa83ccc1e36f.setIcon(icon_708fb975ba66d0fec207be9d605c8729);
+        
+    
+            marker_f2a0c58e17dd325c633dfa83ccc1e36f.bindTooltip(
+                `<div>
+                     Liechtenstein:  Fröhliche Weihnachten or Frohe Weihnachten - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_949f4540b2c56b0400111a68b8b42965 = L.marker(
+                [55.169438, 23.881275],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_107fbda06d54987e58d09c780b19f7c1 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_949f4540b2c56b0400111a68b8b42965.setIcon(icon_107fbda06d54987e58d09c780b19f7c1);
+        
+    
+            marker_949f4540b2c56b0400111a68b8b42965.bindTooltip(
+                `<div>
+                     Lithuania:  Linksmų Kalėdų - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f3cd7e88e1c8d9ffe6cb708c6251703f = L.marker(
+                [49.815273, 6.129583],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_13d11648d4e7062f41dc68fc9c8ee920 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_f3cd7e88e1c8d9ffe6cb708c6251703f.setIcon(icon_13d11648d4e7062f41dc68fc9c8ee920);
+        
+    
+            marker_f3cd7e88e1c8d9ffe6cb708c6251703f.bindTooltip(
+                `<div>
+                     Luxembourg:  Schéine Chrëschtdag - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_bb38c0771167c39750b0cdacc160de68 = L.marker(
+                [41.608635, 21.745275],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_892d22b4a0853105b70e4b344d49c4cd = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_bb38c0771167c39750b0cdacc160de68.setIcon(icon_892d22b4a0853105b70e4b344d49c4cd);
+        
+    
+            marker_bb38c0771167c39750b0cdacc160de68.bindTooltip(
+                `<div>
+                     North Macedonia:  Среќен Божиќ or Христос се роди - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_7dca6f9cc323e9c37da174b93758801a = L.marker(
+                [35.937496, 14.375416],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_fe82306b6831e3d6310db44b1c45f6e7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_7dca6f9cc323e9c37da174b93758801a.setIcon(icon_fe82306b6831e3d6310db44b1c45f6e7);
+        
+    
+            marker_7dca6f9cc323e9c37da174b93758801a.bindTooltip(
+                `<div>
+                     Malta:  il-Milied it-Tajjeb - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_f2072910a1d21990896c221a3db307e3 = L.marker(
+                [47.411631, 28.369885],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_1db73724d2d45b4a682d5e802f7050d8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_f2072910a1d21990896c221a3db307e3.setIcon(icon_1db73724d2d45b4a682d5e802f7050d8);
+        
+    
+            marker_f2072910a1d21990896c221a3db307e3.bindTooltip(
+                `<div>
+                     Moldova:  Crăciun fericit - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8aa6b710ce7b086f7f7c45e1cbc3ecc1 = L.marker(
+                [43.750298, 7.412841],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_687cf979458dd8b90a80a8a3a9c9129e = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_8aa6b710ce7b086f7f7c45e1cbc3ecc1.setIcon(icon_687cf979458dd8b90a80a8a3a9c9129e);
+        
+    
+            marker_8aa6b710ce7b086f7f7c45e1cbc3ecc1.bindTooltip(
+                `<div>
+                     Monaco:  Joyeux Noël - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_9d905f0e35e55cc089d8029fbcd4af31 = L.marker(
+                [42.708678, 19.37439],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_0bc45d0d890fde7fa1fbbe7b0f367bad = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_9d905f0e35e55cc089d8029fbcd4af31.setIcon(icon_0bc45d0d890fde7fa1fbbe7b0f367bad);
+        
+    
+            marker_9d905f0e35e55cc089d8029fbcd4af31.bindTooltip(
+                `<div>
+                     Montenegro:  Srećan Božić or Hristos se rodi - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c835e010802fd1fb4bfd5448804ee6f3 = L.marker(
+                [60.472024, 8.468946],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_8fa54d587531e97ee5e56a377867de02 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_c835e010802fd1fb4bfd5448804ee6f3.setIcon(icon_8fa54d587531e97ee5e56a377867de02);
+        
+    
+            marker_c835e010802fd1fb4bfd5448804ee6f3.bindTooltip(
+                `<div>
+                     Norway:  God jul - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_8b7e36b983b14366f7ba478b4e716f37 = L.marker(
+                [45.943161, 24.96676],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_46b76529b5b7220d574e85ca9c57290c = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_8b7e36b983b14366f7ba478b4e716f37.setIcon(icon_46b76529b5b7220d574e85ca9c57290c);
+        
+    
+            marker_8b7e36b983b14366f7ba478b4e716f37.bindTooltip(
+                `<div>
+                     Romania:  Crăciun fericit - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d7a8e6f1d0d834d4e61cd989df92af01 = L.marker(
+                [51.919438, 19.145136],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_3a92b5268510711448ad444241c6e162 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "orange", "prefix": "glyphicon"}
+            );
+            marker_d7a8e6f1d0d834d4e61cd989df92af01.setIcon(icon_3a92b5268510711448ad444241c6e162);
+        
+    
+            marker_d7a8e6f1d0d834d4e61cd989df92af01.bindTooltip(
+                `<div>
+                     Poland:  Wesołych Świąt (Bożego Narodzenia) - Both used
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_76e08bd4244e0212336116f004ab846b = L.marker(
+                [39.399872, -8.224454],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_be5d9ce24f7b6def67a6adbb0897d9d4 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_76e08bd4244e0212336116f004ab846b.setIcon(icon_be5d9ce24f7b6def67a6adbb0897d9d4);
+        
+    
+            marker_76e08bd4244e0212336116f004ab846b.bindTooltip(
+                `<div>
+                     Portugal:  Feliz Natal - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_b7b2ca56a46ac26cdf397e432cc6d9dd = L.marker(
+                [55.755825, 37.617298],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_3a0ce787a6440cc91046c927edd89a5d = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_b7b2ca56a46ac26cdf397e432cc6d9dd.setIcon(icon_3a0ce787a6440cc91046c927edd89a5d);
+        
+    
+            marker_b7b2ca56a46ac26cdf397e432cc6d9dd.bindTooltip(
+                `<div>
+                     Russia:  с Рождеством (Христовым) - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_164e083d1565dd4c16d818cdc531e3ba = L.marker(
+                [43.94236, 12.457777],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_a43066e9e9bfa7d2d842c3fb2665b4ad = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_164e083d1565dd4c16d818cdc531e3ba.setIcon(icon_a43066e9e9bfa7d2d842c3fb2665b4ad);
+        
+    
+            marker_164e083d1565dd4c16d818cdc531e3ba.bindTooltip(
+                `<div>
+                     San Marino:  Buon Natale - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_37749d6dd59acf3c932bcaee117b79d2 = L.marker(
+                [44.016521, 21.005859],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_7d12bea654e1984ca56eabb52799ee77 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_37749d6dd59acf3c932bcaee117b79d2.setIcon(icon_7d12bea654e1984ca56eabb52799ee77);
+        
+    
+            marker_37749d6dd59acf3c932bcaee117b79d2.bindTooltip(
+                `<div>
+                     Serbia:  Srećan Božić or Hristos se rodi - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_20c1f4d6f3f98489ef1cf372b086a6e2 = L.marker(
+                [48.669026, 19.699024],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_b1dbaf5aeaae866905227805c269c6fc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_20c1f4d6f3f98489ef1cf372b086a6e2.setIcon(icon_b1dbaf5aeaae866905227805c269c6fc);
+        
+    
+            marker_20c1f4d6f3f98489ef1cf372b086a6e2.bindTooltip(
+                `<div>
+                     Slovakia:  Veselé Vianoce - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_d493d70e4fe27b7a04966b9b262f3df2 = L.marker(
+                [46.151241, 14.995463],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_a17cabd4b8f3c80ae62ee5aa2a2a7bbc = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_d493d70e4fe27b7a04966b9b262f3df2.setIcon(icon_a17cabd4b8f3c80ae62ee5aa2a2a7bbc);
+        
+    
+            marker_d493d70e4fe27b7a04966b9b262f3df2.bindTooltip(
+                `<div>
+                     Slovenia:  Vesel božič - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5de3f87db1972eb961dad9d6f26c6e2d = L.marker(
+                [40.463667, -3.74922],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_ec5667357e4dc182dc3a8a36e97ceffe = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_5de3f87db1972eb961dad9d6f26c6e2d.setIcon(icon_ec5667357e4dc182dc3a8a36e97ceffe);
+        
+    
+            marker_5de3f87db1972eb961dad9d6f26c6e2d.bindTooltip(
+                `<div>
+                     Spain:  Feliz Navidad - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_0dbf329e8184c9a3259f6bd6123fb484 = L.marker(
+                [60.128161, 18.643501],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_2b0dd1fa8bba81d02ef8a0d5cc8181e7 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_0dbf329e8184c9a3259f6bd6123fb484.setIcon(icon_2b0dd1fa8bba81d02ef8a0d5cc8181e7);
+        
+    
+            marker_0dbf329e8184c9a3259f6bd6123fb484.bindTooltip(
+                `<div>
+                     Sweden:  God jul - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_a61a736aa745cc1ba42b6f9d8ab87200 = L.marker(
+                [46.818188, 8.227512],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_e8b839179a00c542991a290c31fbe4f2 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_a61a736aa745cc1ba42b6f9d8ab87200.setIcon(icon_e8b839179a00c542991a290c31fbe4f2);
+        
+    
+            marker_a61a736aa745cc1ba42b6f9d8ab87200.bindTooltip(
+                `<div>
+                     Switzerland:  Fröhliche Weihnachten or Frohe Weihnachten/Joyeux Noël - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_c291b5d7f46555fd1f47083e9e7ef955 = L.marker(
+                [38.963745, 35.243322],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_20a06a4a9f7d4233f6628e37f84e2fa8 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "green", "prefix": "glyphicon"}
+            );
+            marker_c291b5d7f46555fd1f47083e9e7ef955.setIcon(icon_20a06a4a9f7d4233f6628e37f84e2fa8);
+        
+    
+            marker_c291b5d7f46555fd1f47083e9e7ef955.bindTooltip(
+                `<div>
+                     Turkey:  Mutlu Noeller - Reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5c0625ce264452aa0f4ec4800ef578ec = L.marker(
+                [48.379433, 31.16558],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_7ff95b15b0fcf9c11cd6f19edf0d98f0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_5c0625ce264452aa0f4ec4800ef578ec.setIcon(icon_7ff95b15b0fcf9c11cd6f19edf0d98f0);
+        
+    
+            marker_5c0625ce264452aa0f4ec4800ef578ec.bindTooltip(
+                `<div>
+                     Ukraine:  з Різдвом (Христовим) - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+    
+            var marker_5c98e1d61ac322f66b45599b128ab549 = L.marker(
+                [41.902916, 12.453389],
+                {}
+            ).addTo(map_1446bc7ba92d57315768085466072a3d);
+        
+    
+            var icon_24a759a35f02d21cd6274d5ea089d1c0 = L.AwesomeMarkers.icon(
+                {"extraClasses": "fa-rotate-0", "icon": "info-sign", "iconColor": "white", "markerColor": "red", "prefix": "glyphicon"}
+            );
+            marker_5c98e1d61ac322f66b45599b128ab549.setIcon(icon_24a759a35f02d21cd6274d5ea089d1c0);
+        
+    
+            marker_5c98e1d61ac322f66b45599b128ab549.bindTooltip(
+                `<div>
+                     Vatican City:  Buon Natale - Not a reference to the name of Christ
+                 </div>`,
+                {"sticky": true}
+            );
+        
+</script>
+</html>
