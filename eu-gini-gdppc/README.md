@@ -1,4 +1,4 @@
-# GDP per Capita vs GINI Index — EU Countries
+# GDP per Capita vs GINI Index - EU Countries
 
 ![Preview](./gdp_gini_eu.gif)
 
@@ -18,7 +18,7 @@ Recently, I came across a Hans Rosling chart with an amazing style and that insp
 - Luxembourg & Ireland stand out for their high GDP per capita
 - Southern & Eastern European countries (Bulgaria, Romania, Baltics) tend to have higher inequality and lower GDP per capita — poorer countries where a smaller proportion of the population controls a larger share of the economy
 
-Hans Rosling made data fun and accessible, and I hope this chart does the same! 🌟
+Hans Rosling made data fun and accessible and I hope this chart does the same! 🌟
 
 ## 🛠️ Tools & Libraries
 
