@@ -1,4 +1,7 @@
---Romanian Data Tribe - X-Mass Data Viz Challenge, December 2023--
+# Merry Christmas in European Languages
+*Romanian Data Tribe - X-Mas Data Viz Challenge, December 2023*
+
+![Preview](./christmas_map.png)
 
 In the 'Merry Christmas in European Languages' challenge, I delved deep into the etymology of native greetings.
 
