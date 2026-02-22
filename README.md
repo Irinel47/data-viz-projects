@@ -15,7 +15,7 @@ An interactive map exploring the etymology of Christmas greetings across Europea
 
 ---
 
-### 📊 [GDP per Capita vs GINI Index — EU Countries](./eu-gini-gdppc/)
+### 📊 [GDP per Capita vs GINI Index - EU Countries](./eu-gini-gdppc/)
 *Animated bubble chart - EU economic inequality over time*
 
 An animated scatter plot comparing GDP per capita and income inequality (GINI index) across EU countries, with bubble size representing population.
