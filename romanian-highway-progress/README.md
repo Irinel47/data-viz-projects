@@ -2,7 +2,7 @@
 
 Interactive visualization of Romania's highway and expressway network progress.
 
-**[Live demo →](https://irinel47.github.io/data-viz-projects/romanian-highway-progress/)**
+**[Live demo →](https://rawcdn.githack.com/Irinel47/data-viz-projects/main/romanian-highway-progress/index.html)**
 
 ![Romanian Highway Progress Dashboard](./preview.png)
 

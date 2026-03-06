@@ -39,4 +39,4 @@ An interactive ISO technical drawing–style dashboard tracking Romania's 17 hig
 
 ![Romanian Highway Progress Dashboard](./romanian-highway-progress/preview.png)
 
-**[Live demo →](https://irinel47.github.io/data-viz-projects/romanian-highway-progress/)**
+**[Live demo →](https://rawcdn.githack.com/Irinel47/data-viz-projects/main/romanian-highway-progress/index.html)**
