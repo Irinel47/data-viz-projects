@@ -13,6 +13,6 @@ Unraveling the linguistic roots revealed a spectrum of origins - from ancient pa
 
 Check out the "etymological expedition" as we uncover the hidden layers behind these festive salutations! 🤔🎁
 
-🍪 [Dynamic experience](https://rawcdn.githack.com/Irinel47/RoDataTribe_MerryChristmass/7e141b0e88c68e4cd9084ed156039e1cf969b4ef/european_christmas.html)
+🍪 [Dynamic experience](https://rawcdn.githack.com/Irinel47/data-viz-projects/main/rodatatribe-merry-christmas-2023/european_christmas.html)
 
 🍪 [Dataset](https://data.world/romanian-data/merry-christmas-in-european-languages)

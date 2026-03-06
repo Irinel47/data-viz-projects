@@ -33,10 +33,10 @@ A generative visual experiment producing a falling snow effect using ASCII chara
 ---
 
 ### 🛣️ [Romanian Highway Progress](./romanian-highway-progress/)
-*Romanian DataViz Challenge — March 2026*
+*Romanian DataViz Challenge - March 2026*
 
-An interactive ISO technical drawing–style dashboard tracking Romania's 17 highway and expressway corridors — open km, under construction, and remaining — plus a yearly openings chart from 1972 to 2025.
+An interactive ISO technical drawing–style dashboard tracking Romania's 17 highway and expressway corridors - open km, under construction, and remaining - plus a yearly openings chart from 1972 to 2025.
 
 ![Romanian Highway Progress Dashboard](./romanian-highway-progress/preview.png)
 
-**[Live demo →](https://rawcdn.githack.com/Irinel47/data-viz-projects/main/romanian-highway-progress/index.html)**
+**[Live demo ->]([https://irinel47.github.io/data-viz-projects/romanian-highway-progress/](https://rawcdn.githack.com/Irinel47/data-viz-projects/main/romanian-highway-progress/index.html))**
