@@ -1,0 +1,1554 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Romanian Highway Progress - March 2026</title>
+    <style>
+      /* ═══════════════════════════════════════════════════════
+         RESET & CSS VARIABLES
+         ISO technical drawing palette: white paper, dark ink,
+         blue for open km, orange for under construction.
+      ═══════════════════════════════════════════════════════ */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      :root {
+        --paper: #ffffff;
+        --ink: #1a1a1a;
+        --ink2: #333333;
+        --dim-blue: #1a4a8a;
+        --mid: #666666;
+        --light: #cccccc;
+        --open: #1a4a8a; /* open km - solid blue */
+        --constr: #e07010; /* under construction - orange hatch */
+        --planned: #e8e8e8; /* planned remaining - light hatch */
+        --thin: 0.5px;
+        --med: 1px;
+      }
+
+      html,
+      body {
+        width: 100%;
+        height: 100%;
+        background: #d0d0d0;
+        font-family: "Courier New", Courier, monospace;
+        overflow: hidden;
+      }
+
+      /* ═══════════════════════════════════════════════════════
+         SHEET - full-viewport container with paper shadow
+      ═══════════════════════════════════════════════════════ */
+      #sheet {
+        position: absolute;
+        inset: 0;
+        display: flex;
+        align-items: stretch;
+        justify-content: stretch;
+      }
+      #drawing {
+        position: absolute;
+        top: 8px;
+        left: 8px;
+        right: 8px;
+        bottom: 8px;
+        background: var(--paper);
+        box-shadow: 2px 3px 12px rgba(0, 0, 0, 0.35);
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      /* ═══════════════════════════════════════════════════════
+         TWO-COLUMN LAYOUT
+         Left: visualisation area  |  Right: notes + title block
+         Right column is 280px to give tables more breathing room.
+      ═══════════════════════════════════════════════════════ */
+      #content {
+        flex: 1;
+        min-height: 0;
+        display: grid;
+        grid-template-columns: 1fr 280px;
+        overflow: hidden;
+      }
+
+      /* ── VIZ AREA (left column) ── */
+      #vizarea {
+        display: flex;
+        flex-direction: column;
+        padding: 12px 12px 8px 14px;
+        gap: 6px;
+        overflow: hidden;
+        min-height: 0;
+        border-right: var(--thin) solid var(--light);
+      }
+
+      /* Section dividers styled like ISO drawing labels */
+      .sec-label {
+        font-size: 9px;
+        font-style: italic;
+        color: var(--ink2);
+        letter-spacing: 0.3px;
+        margin-bottom: 2px;
+        flex-shrink: 0;
+        display: flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .sec-label b {
+        font-style: normal;
+        font-weight: bold;
+        color: var(--ink);
+      }
+      .sec-label::after {
+        content: "";
+        flex: 1;
+        height: var(--thin);
+        background: var(--mid);
+        opacity: 0.5;
+      }
+
+      /* ═══════════════════════════════════════════════════════
+         KPI CARDS - 8-column grid at the top
+      ═══════════════════════════════════════════════════════ */
+      #cards {
+        display: grid;
+        grid-template-columns: repeat(8, 1fr);
+        gap: 4px;
+        flex-shrink: 0;
+      }
+      .card {
+        border: var(--thin) solid var(--light);
+        padding: 4px 5px;
+        position: relative;
+        background: var(--paper);
+      }
+      /* Colour indicator bar at top of each card */
+      .card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+      }
+      .c-total::before {
+        background: var(--ink2);
+      }
+      .c-open::before {
+        background: var(--open);
+      }
+      .c-constr::before {
+        background: var(--constr);
+      }
+      .c-rem::before {
+        background: var(--light);
+      }
+      .c-pct::before {
+        background: #2a7a2a;
+      }
+      .c-hways::before {
+        background: var(--mid);
+      }
+      .c-done::before {
+        background: var(--open);
+      }
+      .c-active::before {
+        background: var(--constr);
+      }
+      /* Corner tick mark (ISO drafting detail) */
+      .card::after {
+        content: "";
+        position: absolute;
+        bottom: 2px;
+        right: 2px;
+        width: 4px;
+        height: 4px;
+        border-right: var(--thin) solid var(--light);
+        border-bottom: var(--thin) solid var(--light);
+      }
+      .cv {
+        font-size: 16px;
+        font-weight: bold;
+        line-height: 1;
+        letter-spacing: -0.5px;
+        color: var(--ink);
+      }
+      .c-open .cv {
+        color: var(--open);
+      }
+      .c-constr .cv {
+        color: var(--constr);
+      }
+      .c-pct .cv {
+        color: #2a7a2a;
+      }
+      .cl {
+        font-size: 7px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        color: var(--mid);
+        margin-top: 2px;
+        line-height: 1.2;
+      }
+
+      /* ═══════════════════════════════════════════════════════
+         VIZ ROW - two panels side by side
+         Left: corridor completion bars
+         Right: yearly km opened chart
+      ═══════════════════════════════════════════════════════ */
+      #vizrow {
+        display: grid;
+        grid-template-columns: 1.3fr 1fr;
+        gap: 10px;
+        flex: 1;
+        min-height: 0;
+        overflow: hidden;
+        height: 0;
+      }
+
+      /* ── LEFT PANEL: Corridor completion bars ── */
+      .col-l {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+        height: 100%;
+      }
+
+      .leg {
+        display: flex;
+        gap: 10px;
+        margin-bottom: 4px;
+        flex-shrink: 0;
+        align-items: center;
+        border: var(--thin) solid var(--light);
+        padding: 2px 6px;
+        background: #fafafa;
+      }
+      .leg-tag {
+        font-size: 7px;
+        color: var(--mid);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        margin-right: 2px;
+      }
+      .li {
+        display: flex;
+        align-items: center;
+        gap: 4px;
+        font-size: 7px;
+        color: var(--ink2);
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+      }
+      .ls {
+        width: 14px;
+        height: 6px;
+        flex-shrink: 0;
+      }
+
+      /* No scrollbar - row heights are computed dynamically by JS */
+      .hwlist {
+        flex: 1;
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .hwr {
+        display: grid;
+        grid-template-columns: 54px 1fr 50px;
+        gap: 4px;
+        align-items: center;
+        padding: 0 2px;
+        transition: background 0.12s;
+        cursor: default;
+        animation: rIn 0.25s both;
+        flex-shrink: 0;
+      }
+      @keyframes rIn {
+        from {
+          opacity: 0;
+          transform: translateX(-3px);
+        }
+        to {
+          opacity: 1;
+          transform: translateX(0);
+        }
+      }
+      .hwr:hover {
+        background: rgba(26, 74, 138, 0.04);
+      }
+
+      .hid {
+        font-size: 13px;
+        font-weight: bold;
+        color: var(--ink);
+        border: var(--thin) solid var(--light);
+        padding: 1px 3px;
+        background: #fafafa;
+        line-height: 1;
+      }
+
+      /* Progress bar elements */
+      .bwrap {
+        position: relative;
+      }
+      .bplan {
+        position: absolute;
+        inset: 0;
+        background: var(--planned);
+        border: var(--thin) solid var(--light);
+        overflow: hidden;
+      }
+      .bplan::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background-image: repeating-linear-gradient(
+          45deg,
+          transparent 0 3px,
+          rgba(0, 0, 0, 0.07) 3px 4px
+        );
+      }
+      .bopen {
+        position: absolute;
+        top: 0;
+        left: 0;
+        bottom: 0;
+        background: var(--open);
+        transition: width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+      /* Dashed centre-line on open segment - road metaphor */
+      .bopen::after {
+        content: "";
+        position: absolute;
+        top: 50%;
+        left: 4px;
+        right: 2px;
+        height: 1px;
+        transform: translateY(-50%);
+        background: repeating-linear-gradient(
+          90deg,
+          rgba(255, 255, 255, 0.5) 0 5px,
+          transparent 5px 9px
+        );
+      }
+      .bconstr {
+        position: absolute;
+        top: 0;
+        bottom: 0;
+        background: repeating-linear-gradient(
+          45deg,
+          var(--constr) 0 3px,
+          rgba(224, 112, 16, 0.6) 3px 6px
+        );
+        transition:
+          left 1s cubic-bezier(0.4, 0, 0.2, 1),
+          width 1s cubic-bezier(0.4, 0, 0.2, 1);
+      }
+
+      .bann {
+        display: flex;
+        justify-content: space-between;
+        color: var(--mid);
+        line-height: 1;
+      }
+      .bao {
+        color: var(--open);
+      }
+      .bac {
+        color: var(--constr);
+      }
+      .bar2 {
+        color: #aaa;
+      }
+
+      /* Sort controls */
+      .sort-bar {
+        flex-shrink: 0;
+        display: flex;
+        align-items: stretch;
+        padding: 4px 0 2px;
+        border-top: var(--thin) solid var(--light);
+      }
+      .sort-lbl {
+        font-size: 7px;
+        color: var(--mid);
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        white-space: nowrap;
+        display: flex;
+        align-items: center;
+        padding: 0 6px;
+        border-right: var(--thin) solid var(--light);
+        flex-shrink: 0;
+      }
+      .sort-btn {
+        font-family: "Courier New", Courier, monospace;
+        font-size: 7px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        color: var(--mid);
+        background: var(--paper);
+        border: none;
+        border-right: var(--thin) solid var(--light);
+        padding: 3px 0;
+        cursor: pointer;
+        transition: all 0.12s;
+        white-space: nowrap;
+        flex: 1;
+        text-align: center;
+      }
+      .sort-btn:last-child {
+        border-right: none;
+      }
+      .sort-btn:hover {
+        background: rgba(26, 74, 138, 0.06);
+        color: var(--dim-blue);
+      }
+      .sort-btn.active {
+        background: var(--dim-blue);
+        color: white;
+      }
+
+      .hpct {
+        text-align: right;
+        font-weight: bold;
+        line-height: 1;
+        color: var(--ink);
+      }
+      .hkm {
+        color: var(--mid);
+        text-align: right;
+        margin-top: 1px;
+      }
+
+      /* ── RIGHT PANEL: Yearly chart ── */
+      .col-r {
+        display: flex;
+        flex-direction: column;
+        min-height: 0;
+        overflow: hidden;
+      }
+
+      #chartArea {
+        flex: 1;
+        position: relative;
+        min-height: 0;
+        border: var(--thin) solid var(--light);
+        background: #fafafa;
+        padding: 14px 4px 38px 4px;
+        overflow: hidden;
+      }
+
+      /* SVG overlay for gridlines and AVG reference line.
+         z-index:2 keeps it in front of the bar divs. */
+      .ygsvg {
+        position: absolute;
+        top: 14px;
+        left: 4px;
+        pointer-events: none;
+        z-index: 2;
+      }
+
+      .xaline {
+        position: absolute;
+        bottom: 38px;
+        left: 4px;
+        right: 4px;
+        height: var(--med);
+        background: var(--ink2);
+      }
+
+      /* Bars container - absolute, inset to match SVG coordinate space */
+      #bars {
+        position: absolute;
+        top: 14px;
+        left: 4px;
+        right: 4px;
+        bottom: 38px;
+        display: flex;
+        align-items: flex-end;
+        gap: 2px;
+      }
+      .bcol {
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+        position: relative;
+        overflow: visible;
+      }
+      .gcol {
+        flex: 0.28;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-end;
+        height: 100%;
+      }
+      .gdline {
+        width: 1px;
+        flex: 1;
+        margin-bottom: 2px;
+        background: repeating-linear-gradient(
+          180deg,
+          var(--light) 0 2px,
+          transparent 2px 5px
+        );
+      }
+      .glbl {
+        font-size: 6px;
+        color: var(--mid);
+        writing-mode: vertical-rl;
+        transform: rotate(180deg);
+        letter-spacing: 1px;
+        margin-bottom: 16px;
+        text-transform: uppercase;
+      }
+
+      .bklbl {
+        font-size: 10px;
+        font-weight: bold;
+        color: var(--mid);
+        margin-bottom: 1px;
+        text-align: center;
+        line-height: 1;
+        white-space: nowrap;
+        display: block;
+      }
+      .bklbl.hi {
+        color: var(--dim-blue);
+      }
+
+      .byrlbl {
+        font-size: 6px;
+        color: var(--mid);
+        position: absolute;
+        bottom: -18px;
+        transform: rotate(-45deg) translateX(-30%);
+        transform-origin: top left;
+        white-space: nowrap;
+        line-height: 1;
+        display: block;
+      }
+
+      /* Road-style bars: dark asphalt with yellow dashed centre stripe */
+      .brd {
+        width: 100%;
+        border-radius: 0;
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+        min-height: 2px;
+        background: #222;
+        border-top: 1px solid #444;
+        height: 0%;
+      }
+      /* Subtle surface texture */
+      .brd::before {
+        content: "";
+        position: absolute;
+        inset: 0;
+        background: repeating-linear-gradient(
+          90deg,
+          transparent 0 4px,
+          rgba(255, 255, 255, 0.04) 4px 5px
+        );
+      }
+      /* Yellow dashed centre line */
+      .brd::after {
+        content: "";
+        position: absolute;
+        left: 50%;
+        top: 0;
+        bottom: 0;
+        width: 2px;
+        transform: translateX(-50%);
+        background: repeating-linear-gradient(
+          180deg,
+          #f5c518 0 5px,
+          transparent 5px 10px
+        );
+        opacity: 0.6;
+      }
+      .brd.isrec {
+        border: 1.5px solid var(--dim-blue);
+      }
+
+      /* ═══════════════════════════════════════════════════════
+         RIGHT COLUMN - notes panel + ISO 7200 title block
+      ═══════════════════════════════════════════════════════ */
+      #titlecol {
+        display: flex;
+        flex-direction: column;
+        overflow: hidden;
+      }
+
+      #notes {
+        flex: 1;
+        padding: 40px 9px 8px;
+        display: flex;
+        flex-direction: column;
+        gap: 4px;
+        overflow: hidden;
+      }
+
+      .note-header {
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--mid);
+        border-bottom: var(--thin) solid var(--light);
+        padding-bottom: 2px;
+      }
+      .note-line {
+        font-size: 9px;
+        color: var(--ink2);
+        line-height: 1.6;
+        font-style: italic;
+      }
+      .note-line b {
+        color: var(--ink);
+        font-style: normal;
+      }
+
+      .tol-table {
+        border: var(--thin) solid var(--light);
+        flex-shrink: 0;
+      }
+      .tol-row {
+        display: grid;
+        grid-template-columns: 80px 1fr;
+        border-bottom: var(--thin) solid var(--light);
+      }
+      .tol-row:last-child {
+        border-bottom: none;
+      }
+      .tol-k {
+        font-size: 9px;
+        color: var(--mid);
+        padding: 2px 5px;
+        text-transform: uppercase;
+        letter-spacing: 0.5px;
+        border-right: var(--thin) solid var(--light);
+        background: #f5f5f5;
+      }
+      .tol-v {
+        font-size: 11px;
+        color: var(--ink2);
+        padding: 2px 5px;
+      }
+
+      /* ISO 7200 title block - anchored to bottom-right of drawing */
+      #titleblock {
+        position: absolute;
+        bottom: 8px;
+        right: 8px;
+        width: 264px;
+        background: var(--paper);
+        border: var(--thin) solid var(--light);
+        z-index: 10;
+      }
+      .tb-top {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        border-bottom: var(--thin) solid var(--light);
+      }
+      .tb-cell {
+        padding: 2px 6px;
+        border-right: var(--thin) solid var(--light);
+      }
+      .tb-cell:last-child {
+        border-right: none;
+      }
+      .tb-cell-label {
+        font-size: 10px;
+        color: var(--mid);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        display: block;
+      }
+      .tb-cell-value {
+        font-size: 10px;
+        color: var(--ink);
+        font-weight: bold;
+        display: block;
+        margin-top: 1px;
+      }
+      .tb-mid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        border-bottom: var(--thin) solid var(--light);
+      }
+      .tb-title-row {
+        padding: 3px 6px;
+        border-bottom: var(--thin) solid var(--light);
+        background: #fafafa;
+      }
+      .tb-project {
+        font-size: 10px;
+        color: var(--mid);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+      .tb-title {
+        font-size: 10px;
+        font-weight: bold;
+        color: var(--ink);
+        letter-spacing: 0.3px;
+        text-transform: uppercase;
+        line-height: 1.2;
+        margin-top: 1px;
+      }
+      .tb-bottom {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+      }
+      .tb-b-cell {
+        padding: 2px 6px;
+        border-right: var(--thin) solid var(--light);
+        text-align: center;
+      }
+      .tb-b-cell:last-child {
+        border-right: none;
+      }
+      .tb-b-label {
+        font-size: 10px;
+        color: var(--mid);
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+        display: block;
+      }
+      .tb-b-value {
+        font-size: 10px;
+        color: var(--ink);
+        font-weight: bold;
+        display: block;
+        margin-top: 1px;
+      }
+
+      /* ── Hover tooltip ── */
+      #tt {
+        position: fixed;
+        background: white;
+        border: var(--med) solid var(--ink2);
+        border-left: 3px solid var(--dim-blue);
+        padding: 6px 10px;
+        font-size: 9px;
+        line-height: 1.7;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 0.1s;
+        z-index: 999;
+        white-space: nowrap;
+        box-shadow: 2px 3px 8px rgba(0, 0, 0, 0.2);
+        color: var(--ink);
+      }
+      #tt.show {
+        opacity: 1;
+      }
+      .tty {
+        color: var(--dim-blue);
+        font-weight: bold;
+        font-size: 11px;
+        display: block;
+        letter-spacing: 0.5px;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="sheet">
+      <div id="drawing">
+        <div id="content">
+          <!-- ── LEFT: Visualisation area ── -->
+          <div id="vizarea">
+            <div class="sec-label"><b>SECTION 1</b> - Key Metrics Overview</div>
+            <div id="cards"></div>
+
+            <div id="vizrow">
+              <!-- Corridor completion panel -->
+              <div class="col-l">
+                <div class="sec-label">
+                  <b>DETAIL A-A</b> - Completion by Corridor
+                </div>
+                <div class="leg">
+                  <span class="leg-tag">REF -</span>
+                  <div class="li">
+                    <div class="ls" style="background: var(--open)"></div>
+                    Open
+                  </div>
+                  <div class="li">
+                    <div
+                      class="ls"
+                      style="
+                        background: repeating-linear-gradient(
+                          45deg,
+                          var(--constr) 0 3px,
+                          rgba(224, 112, 16, 0.5) 3px 6px
+                        );
+                      "
+                    ></div>
+                    Under Construction
+                  </div>
+                  <div class="li">
+                    <div
+                      class="ls"
+                      style="
+                        background: repeating-linear-gradient(
+                          45deg,
+                          transparent 0 3px,
+                          rgba(0, 0, 0, 0.07) 3px 4px
+                        );
+                        border: 0.5px solid var(--light);
+                      "
+                    ></div>
+                    Planned Remaining
+                  </div>
+                </div>
+                <div class="hwlist" id="hwList"></div>
+                <div class="sort-bar">
+                  <span class="sort-lbl">SORT BY</span>
+                  <button class="sort-btn active" data-sort="completion">
+                    Completion %
+                  </button>
+                  <button class="sort-btn" data-sort="open">Open km</button>
+                  <button class="sort-btn" data-sort="constr">
+                    Under Constr.
+                  </button>
+                  <button class="sort-btn" data-sort="active">
+                    Open + Constr.
+                  </button>
+                  <button class="sort-btn" data-sort="remaining">
+                    Remaining
+                  </button>
+                </div>
+              </div>
+
+              <!-- Yearly chart panel -->
+              <div class="col-r">
+                <div class="sec-label">
+                  <b>DETAIL B-B</b> - Yearly km Opened
+                  <span
+                    style="
+                      font-size: 7px;
+                      color: var(--mid);
+                      font-style: normal;
+                    "
+                    >(1972–2025)</span
+                  >
+                </div>
+                <div id="chartArea">
+                  <svg class="ygsvg" id="ygsvg"></svg>
+                  <div class="xaline"></div>
+                  <div id="bars"></div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- ── RIGHT: Notes column ── -->
+          <div id="titlecol">
+            <div id="notes">
+              <div>
+                <div class="note-header">General Notes</div>
+                <div class="note-line">
+                  All distances in <b>kilometres (km)</b>.
+                </div>
+                <div class="note-line">Data source: <b>130km.ro</b></div>
+                <div class="note-line">Status as of <b>March 2026</b>.</div>
+                <div class="note-line">
+                  Yearly data includes motorways &amp; expressways.
+                </div>
+                <div class="note-line">
+                  Gap years (1973–1986, 1988–2003): no openings recorded.
+                </div>
+              </div>
+              <div style="flex: 1; min-height: 4px; max-height: 16px"></div>
+
+              <div class="note-header">Network Status</div>
+              <div class="tol-table">
+                <div class="tol-row">
+                  <div class="tol-k">Total planned</div>
+                  <div class="tol-v"><b>3,665 km</b></div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Open</div>
+                  <div
+                    class="tol-v"
+                    style="color: var(--open); font-weight: bold"
+                  >
+                    1,402 km (38%)
+                  </div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Under constr.</div>
+                  <div
+                    class="tol-v"
+                    style="color: var(--constr); font-weight: bold"
+                  >
+                    1,004 km (27%)
+                  </div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Remaining</div>
+                  <div class="tol-v" style="color: var(--mid)">
+                    1,259 km (34%)
+                  </div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Corridors</div>
+                  <div class="tol-v">17 total, 3 complete</div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Active sites</div>
+                  <div class="tol-v">10 corridors</div>
+                </div>
+              </div>
+
+              <div class="note-header" style="margin-top: 4px">
+                Yearly Performance
+              </div>
+              <div class="tol-table">
+                <div class="tol-row">
+                  <div class="tol-k">Record year</div>
+                  <div class="tol-v" style="color: #0d2d5e; font-weight: bold">
+                    2024: 199 km
+                  </div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">2nd best</div>
+                  <div class="tol-v">2025: 146 km</div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">3rd best</div>
+                  <div class="tol-v">2012: 140 km</div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Avg / yr</div>
+                  <div class="tol-v" id="avgNote"></div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Years tracked</div>
+                  <div class="tol-v">21 years</div>
+                </div>
+              </div>
+
+              <div class="note-header" style="margin-top: 4px">
+                Surface Legend
+              </div>
+              <div class="tol-table">
+                <div class="tol-row">
+                  <div class="tol-k">Open</div>
+                  <div
+                    class="tol-v"
+                    style="color: var(--open); font-weight: bold"
+                  >
+                    In operation
+                  </div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Constr.</div>
+                  <div
+                    class="tol-v"
+                    style="color: var(--constr); font-weight: bold"
+                  >
+                    Active site
+                  </div>
+                </div>
+                <div class="tol-row">
+                  <div class="tol-k">Planned</div>
+                  <div class="tol-v" style="color: var(--mid)">Not started</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <!-- end #content -->
+
+        <!-- ISO 7200 title block -->
+        <div id="titleblock">
+          <div class="tb-top">
+            <div class="tb-cell">
+              <span class="tb-cell-label">Designed by</span
+              ><span class="tb-cell-value">IRINEL CRISTEA</span>
+            </div>
+            <div class="tb-cell">
+              <span class="tb-cell-label">Date</span
+              ><span class="tb-cell-value">MAR 2026</span>
+            </div>
+          </div>
+          <div class="tb-mid">
+            <div class="tb-cell">
+              <span class="tb-cell-label">Approved</span
+              ><span class="tb-cell-value">RDVC</span>
+            </div>
+            <div class="tb-cell">
+              <span class="tb-cell-label">Revision</span
+              ><span class="tb-cell-value">A</span>
+            </div>
+            <div class="tb-cell">
+              <span class="tb-cell-label">Status</span
+              ><span class="tb-cell-value" style="color: #2a7a2a">ISSUED</span>
+            </div>
+          </div>
+          <div class="tb-title-row">
+            <div class="tb-project">
+              Romanian DataViz Challenge - March 2026
+            </div>
+            <div class="tb-title">Highway Progress<br />Romania</div>
+          </div>
+          <div class="tb-bottom">
+            <div class="tb-b-cell">
+              <span class="tb-b-label">Size</span
+              ><span class="tb-b-value">16:9</span>
+            </div>
+            <div class="tb-b-cell">
+              <span class="tb-b-label">Scale</span
+              ><span class="tb-b-value">1:1</span>
+            </div>
+            <div class="tb-b-cell">
+              <span class="tb-b-label">DWG No.</span
+              ><span class="tb-b-value" style="font-size: 10px"
+                >RDVC-2026-01</span
+              >
+            </div>
+          </div>
+        </div>
+      </div>
+      <!-- end #drawing -->
+    </div>
+    <!-- end #sheet -->
+
+    <div id="tt"></div>
+
+    <script>
+      // ═══════════════════════════════════════════════════════
+      // DATA
+      // HW: highway corridors - id, route description, planned (p), open (o), under construction (c) in km
+      // YR: yearly km opened (only years with openings recorded)
+      // ═══════════════════════════════════════════════════════
+      const HW = [
+        { id: "A0", r: "Bucharest Ring Road", p: 100.8, o: 72.5, c: 28.2 },
+        {
+          id: "A1",
+          r: "Bucharest – Pitesti – Sibiu – Deva – Timisoara – Arad – Nadlac",
+          p: 577.98,
+          o: 486.2,
+          c: 92.1,
+        },
+        { id: "A2", r: "Bucharest – Constanta", p: 202.79, o: 202.79, c: 0 },
+        {
+          id: "A3",
+          r: "Bucharest – Ploiesti – Brasov – Cluj-Napoca – Bors",
+          p: 439.12,
+          o: 200.7,
+          c: 138.2,
+        },
+        { id: "A4", r: "Constanta Ring Road", p: 52.0, o: 21.8, c: 0 },
+        {
+          id: "A6",
+          r: "Bucharest – Alexandria – Craiova – Calafat – Caransebes – Lugoj",
+          p: 300.0,
+          o: 10.5,
+          c: 0,
+        },
+        {
+          id: "A7",
+          r: "Ploiesti – Buzau – Focsani – Bacau – Suceava – Siret",
+          p: 453.0,
+          o: 212.0,
+          c: 123.2,
+        },
+        {
+          id: "A8",
+          r: "Targu Mures – Pascani – Iasi – Ungheni",
+          p: 305.0,
+          o: 0,
+          c: 216.9,
+        },
+        { id: "A9", r: "Timisoara – Moravita", p: 72.93, o: 0, c: 0 },
+        { id: "A10", r: "Sebes – Turda", p: 70.0, o: 70.0, c: 0 },
+        {
+          id: "A13",
+          r: "Sibiu – Fagaras – Brasov – Bacau",
+          p: 300.0,
+          o: 0,
+          c: 68.0,
+        },
+        {
+          id: "A14",
+          r: "Oar – Satu Mare – Baia Mare – Dej – Bistrita – Suceava",
+          p: 335.0,
+          o: 0,
+          c: 10.8,
+        },
+        { id: "DEx4", r: "Turda – Dej", p: 70.0, o: 5.0, c: 0 },
+        { id: "DEx5A", r: "Bacau – Piatra Neamt", p: 51.0, o: 0, c: 0 },
+        { id: "DEx6", r: "Focsani – Braila – Galati", p: 85.8, o: 0, c: 85.8 },
+        {
+          id: "DEx12",
+          r: "Craiova – Slatina – Pitesti",
+          p: 121.12,
+          o: 121.12,
+          c: 0,
+        },
+        { id: "DEx16", r: "Arad – Oradea", p: 136.97, o: 15.1, c: 120.5 },
+      ];
+
+      const YR = [
+        { y: 1972, k: 95 },
+        { y: 1987, k: 18 },
+        { y: 2004, k: 97 },
+        { y: 2007, k: 50 },
+        { y: 2009, k: 42 },
+        { y: 2010, k: 28 },
+        { y: 2011, k: 65 },
+        { y: 2012, k: 140 },
+        { y: 2013, k: 97 },
+        { y: 2014, k: 28 },
+        { y: 2015, k: 47 },
+        { y: 2016, k: 22 },
+        { y: 2017, k: 15 },
+        { y: 2018, k: 60 },
+        { y: 2019, k: 43 },
+        { y: 2020, k: 61 },
+        { y: 2021, k: 30 },
+        { y: 2022, k: 53 },
+        { y: 2023, k: 80 },
+        { y: 2024, k: 199 },
+        { y: 2025, k: 146 },
+      ];
+
+      // ── Derived totals ──
+      const tO = HW.reduce((s, h) => s + h.o, 0);
+      const tC = HW.reduce((s, h) => s + h.c, 0);
+      const tP = HW.reduce((s, h) => s + h.p, 0);
+      const tR = tP - tO - tC;
+      const tPct = Math.round((tO / tP) * 100);
+      const nD = HW.filter((h) => h.o >= h.p).length;
+      const nA = HW.filter((h) => h.c > 0).length;
+      const maxK = Math.max(...YR.map((d) => d.k));
+      const yMax = Math.ceil(maxK / 50) * 50; // round up to next 50 for chart scale
+      const avgK = Math.round(YR.reduce((s, d) => s + d.k, 0) / YR.length);
+      document.getElementById("avgNote").textContent = avgK + " km";
+
+      let currentSort = "completion";
+
+      // ═══════════════════════════════════════════════════════
+      // KPI CARDS
+      // ═══════════════════════════════════════════════════════
+      const CDEFS = [
+        { cls: "c-total", v: Math.round(tP) + " km", l: "Total Planned" },
+        { cls: "c-open", v: Math.round(tO) + " km", l: "Open" },
+        { cls: "c-constr", v: Math.round(tC) + " km", l: "Under Construction" },
+        { cls: "c-rem", v: Math.round(tR) + " km", l: "Remaining" },
+        { cls: "c-pct", v: tPct + "%", l: "Completion" },
+        { cls: "c-hways", v: HW.length, l: "Corridors" },
+        { cls: "c-done", v: nD, l: "Fully Open" },
+        { cls: "c-active", v: nA, l: "Active Constr." },
+      ];
+      const cardsEl = document.getElementById("cards");
+      CDEFS.forEach((c) => {
+        const d = document.createElement("div");
+        d.className = "card " + c.cls;
+        d.innerHTML = `<div class="cv">${c.v}</div><div class="cl">${c.l}</div>`;
+        cardsEl.appendChild(d);
+      });
+
+      const tt = document.getElementById("tt");
+
+      // ═══════════════════════════════════════════════════════
+      // CORRIDOR COMPLETION BARS
+      // ═══════════════════════════════════════════════════════
+
+      function sortKey(h, key) {
+        const rem = h.p - h.o - h.c;
+        if (key === "completion") return h.o / h.p;
+        if (key === "open") return h.o;
+        if (key === "constr") return h.c;
+        if (key === "active") return h.o + h.c;
+        if (key === "remaining") return rem;
+        return h.o / h.p;
+      }
+
+      // Compute all row/font sizes to fill the container exactly with no scrollbar
+      function computeRowSizes(containerH, n) {
+        const gap = 3;
+        const rowH = Math.floor((containerH - gap * (n - 1)) / n);
+        return {
+          rowH,
+          barH: Math.max(14, Math.floor(rowH * 0.55)),
+          annH: Math.max(7, Math.floor(rowH * 0.18)),
+          annFont: Math.max(6, Math.min(8, Math.floor(rowH * 0.18 * 0.85))),
+          pctFont: Math.max(10, Math.min(16, Math.floor(rowH * 0.48))),
+          kmFont: Math.max(6, Math.min(10, Math.floor(rowH * 0.2))),
+          gap,
+        };
+      }
+
+      function renderHwBars(sortBy) {
+        currentSort = sortBy;
+        const hwList = document.getElementById("hwList");
+        if (!hwList) return;
+        hwList.innerHTML = "";
+        let containerH = hwList.clientHeight;
+        if (!containerH) {
+          // clientHeight is 0 - measure from parent chain instead
+          const vizrow = document.getElementById("vizrow");
+          const colL = hwList.closest(".col-l");
+          if (vizrow && colL) {
+            const leg = colL.querySelector(".leg");
+            const sortBar = colL.querySelector(".sort-bar");
+            const secLabel = colL.querySelector(".sec-label");
+            const usedH =
+              (leg ? leg.offsetHeight : 0) +
+              (sortBar ? sortBar.offsetHeight : 0) +
+              (secLabel ? secLabel.offsetHeight : 0) +
+              20; // gap/padding
+            containerH = vizrow.clientHeight - usedH;
+          }
+          if (!containerH) {
+            setTimeout(() => renderHwBars(sortBy), 200);
+            return;
+          }
+        }
+
+        const sorted = [...HW].sort(
+          (a, b) => sortKey(b, sortBy) - sortKey(a, sortBy),
+        );
+        const sz = computeRowSizes(containerH, sorted.length);
+
+        sorted.forEach((h, i) => {
+          const pO = h.o / h.p,
+            pC = h.c / h.p,
+            pN = Math.round(pO * 100);
+          const rem = +(h.p - h.o - h.c).toFixed(1);
+          const pcCol =
+            pN === 100 ? "#2a7a2a" : pN === 0 ? "#999" : "var(--ink)";
+          const statusTxt =
+            pN === 100
+              ? "COMPLETE"
+              : h.c === 0 && h.o === 0
+                ? "PLANNED"
+                : h.c > 0 && h.o === 0
+                  ? "CONSTR. ONLY"
+                  : "IN PROGRESS";
+          const statusCol =
+            pN === 100
+              ? "#2a7a2a"
+              : h.c > 0 && h.o === 0
+                ? "var(--constr)"
+                : pN === 0
+                  ? "#999"
+                  : "var(--dim-blue)";
+
+          const row = document.createElement("div");
+          row.className = "hwr";
+          row.style.cssText = `animation-delay:${i * 0.018}s;margin-bottom:${sz.gap}px;height:${sz.rowH}px;`;
+
+          row.innerHTML = `
+            <div style="display:flex;align-items:center">
+              <div class="hid" style="font-size:${Math.max(14, sz.barH)}px">${h.id}</div>
+            </div>
+            <div>
+              <div class="bwrap" style="height:${sz.barH}px">
+                <div class="bplan"></div>
+                <div class="bopen" id="bo_${h.id}" style="width:0%"></div>
+                <div class="bconstr" id="bc_${h.id}" style="left:0%;width:0%"></div>
+              </div>
+              <div class="bann" style="font-size:${sz.annFont}px;height:${sz.annH}px;margin-top:2px">
+                <span class="bao">${h.o > 0 ? h.o.toFixed(1) + " km" : "–"}</span>
+                <span class="bac">${h.c > 0 ? h.c.toFixed(1) + " c." : ""}</span>
+                <span class="bar2">${rem > 0.1 ? rem.toFixed(1) + " r." : ""}</span>
+              </div>
+            </div>
+            <div style="display:flex;flex-direction:column;justify-content:center;align-items:flex-end">
+              <div class="hpct" style="color:${pcCol};font-size:${sz.pctFont}px">${pN}%</div>
+              <div class="hkm" style="font-size:${sz.kmFont}px">${h.o.toFixed(0)}/${h.p.toFixed(0)}</div>
+            </div>`;
+          hwList.appendChild(row);
+
+          // Store target widths and animate in
+          const bo = document.getElementById("bo_" + h.id);
+          const bc = document.getElementById("bc_" + h.id);
+          bo.dataset.w = (pO * 100).toFixed(2);
+          bc.dataset.l = (pO * 100).toFixed(2);
+          bc.dataset.w = (pC * 100).toFixed(2);
+          bo.style.transition = `width 0.7s cubic-bezier(.4,0,.2,1) ${i * 0.015}s`;
+          bc.style.transition = `left 0.7s cubic-bezier(.4,0,.2,1) ${i * 0.015}s, width 0.7s cubic-bezier(.4,0,.2,1) ${i * 0.015}s`;
+          setTimeout(() => {
+            bo.style.width = bo.dataset.w + "%";
+            bc.style.left = bc.dataset.l + "%";
+            bc.style.width = bc.dataset.w + "%";
+          }, 80);
+
+          // Tooltip on hover
+          row.addEventListener("mousemove", (e) => {
+            tt.innerHTML = `
+              <span class="tty">${h.id}</span>
+              <span style="color:#555;font-size:8px;font-style:italic;display:block;margin-bottom:3px">${h.r}</span>
+              <div style="border-top:0.5px solid #ccc;margin:3px 0"></div>
+              <span style="font-size:9px;display:block"><span style="color:var(--open);font-weight:bold">OPEN &nbsp;&nbsp;&nbsp;</span>${h.o.toFixed(1)} km</span>
+              ${h.c > 0 ? `<span style="font-size:9px;display:block"><span style="color:var(--constr);font-weight:bold">CONSTR. </span>${h.c.toFixed(1)} km</span>` : ""}
+              ${rem > 0.1 ? `<span style="font-size:9px;display:block"><span style="color:#999;font-weight:bold">REM. &nbsp;&nbsp;</span>${rem.toFixed(1)} km</span>` : ""}
+              <span style="font-size:9px;display:block"><span style="color:#555;font-weight:bold">PLANNED </span>${h.p.toFixed(1)} km</span>
+              <div style="border-top:0.5px solid #ccc;margin:4px 0 3px"></div>
+              <span style="font-size:9px;font-weight:bold;color:${statusCol}">${statusTxt}</span>`;
+            tt.style.left =
+              Math.min(e.clientX + 14, window.innerWidth - 240) + "px";
+            tt.style.top = Math.max(8, e.clientY - 80) + "px";
+            tt.classList.add("show");
+            row.style.background = "rgba(26,74,138,.06)";
+          });
+          row.addEventListener("mouseleave", () => {
+            tt.classList.remove("show");
+            row.style.background = "";
+          });
+        });
+      }
+
+      document.querySelectorAll(".sort-btn").forEach((btn) => {
+        btn.addEventListener("click", () => {
+          document
+            .querySelectorAll(".sort-btn")
+            .forEach((b) => b.classList.remove("active"));
+          btn.classList.add("active");
+          renderHwBars(btn.dataset.sort);
+        });
+      });
+
+      // ═══════════════════════════════════════════════════════
+      // YEARLY CHART BARS
+      // Each bar is a road-style dark column; gap years shown as
+      // dashed vertical dividers with label.
+      // ═══════════════════════════════════════════════════════
+      const barsEl = document.getElementById("bars");
+
+      YR.forEach((d) => {
+        // Insert gap-year dividers before the next real year
+        if (d.y === 1972) {
+          const g = document.createElement("div");
+          g.className = "gcol";
+          g.innerHTML =
+            '<div class="gdline"></div><div class="glbl">1973–1986</div>';
+          barsEl.appendChild(g);
+        }
+        if (d.y === 1987) {
+          const g = document.createElement("div");
+          g.className = "gcol";
+          g.innerHTML =
+            '<div class="gdline"></div><div class="glbl">1988–2003</div>';
+          barsEl.appendChild(g);
+        }
+
+        const isRec = d.k === maxK;
+        const hPct = (d.k / yMax) * 100;
+
+        const col = document.createElement("div");
+        col.className = "bcol";
+        const lbl = document.createElement("div");
+        lbl.className = "bklbl" + (isRec ? " hi" : "");
+        const bar = document.createElement("div");
+        bar.className = "brd" + (isRec ? " isrec" : "");
+        bar.style.height = "0%";
+        bar.dataset.target = hPct;
+
+        // Yellow stripe brightness scales with bar height
+        const opacity = (0.2 + 0.8 * (d.k / maxK)).toFixed(2);
+        const stripe = document.createElement("div");
+        stripe.style.cssText = `position:absolute;left:50%;top:0;bottom:0;width:2px;transform:translateX(-50%);background:repeating-linear-gradient(180deg,rgba(245,197,24,${opacity}) 0 5px,transparent 5px 10px);pointer-events:none;z-index:1`;
+        bar.appendChild(stripe);
+
+        if (isRec) {
+          // Record bar: km label inside the bar at the top
+          lbl.textContent = d.k;
+          lbl.style.cssText =
+            "position:absolute;top:3px;left:0;right:0;z-index:3;text-align:center;font-size:7px;font-weight:bold;color:#f5c518;pointer-events:none";
+          bar.appendChild(lbl);
+        } else {
+          lbl.textContent = d.k;
+        }
+
+        const yr = document.createElement("div");
+        yr.className = "byrlbl";
+        yr.textContent = d.y;
+        if (!isRec) col.appendChild(lbl);
+        col.appendChild(bar);
+        col.appendChild(yr);
+        barsEl.appendChild(col);
+
+        // Tooltip
+        bar.addEventListener("mousemove", (e) => {
+          const cum = YR.slice(0, YR.indexOf(d) + 1).reduce(
+            (s, x) => s + x.k,
+            0,
+          );
+          tt.innerHTML = `
+            <span class="tty">${d.y}</span>
+            <span style="font-size:12px;font-weight:bold;color:var(--ink);display:block"><span style="color:var(--dim-blue)">${d.k}</span> km opened</span>
+            <span style="font-size:9px;color:#555;display:block">Cumulative: <b style="color:var(--ink)">${cum}</b> km</span>
+            ${isRec ? '<span style="color:var(--dim-blue);font-size:8px;display:block;margin-top:2px">★ ALL-TIME RECORD</span>' : ""}`;
+          tt.style.left =
+            Math.min(e.clientX + 14, window.innerWidth - 180) + "px";
+          tt.style.top = Math.max(8, e.clientY - 75) + "px";
+          tt.classList.add("show");
+          bar.style.filter = "brightness(1.6)";
+        });
+        bar.addEventListener("mouseleave", () => {
+          tt.classList.remove("show");
+          bar.style.filter = "";
+        });
+      });
+
+      // ═══════════════════════════════════════════════════════
+      // ANIMATE BARS (height transition from 0 to target %)
+      // ═══════════════════════════════════════════════════════
+      function animateBars() {
+        const ca = document.getElementById("chartArea");
+        if (!ca || ca.clientHeight < 20) return;
+        document.querySelectorAll(".brd[data-target]").forEach((bar, i) => {
+          bar.style.transition = `height 0.85s cubic-bezier(.4,0,.2,1) ${i * 0.036}s`;
+          setTimeout(() => {
+            bar.style.height = parseFloat(bar.dataset.target) + "%";
+          }, 80);
+        });
+      }
+
+      // ═══════════════════════════════════════════════════════
+      // DRAW SVG GRID (gridlines + AVG reference line)
+      // SVG is sized to match #bars exactly so coordinates align.
+      // ═══════════════════════════════════════════════════════
+      function drawGrid() {
+        const svg = document.getElementById("ygsvg");
+        const barsDiv = document.getElementById("bars");
+        if (!svg || !barsDiv) return;
+        const H = barsDiv.clientHeight,
+          W = barsDiv.clientWidth;
+        if (!W || !H) {
+          setTimeout(drawGrid, 100);
+          return;
+        }
+
+        svg.style.width = W + "px";
+        svg.style.height = H + "px";
+        svg.setAttribute("viewBox", `0 0 ${W} ${H}`);
+        svg.setAttribute("width", W);
+        svg.setAttribute("height", H);
+        svg.innerHTML = "";
+        const ns = "http://www.w3.org/2000/svg";
+
+        // Horizontal gridlines at every 50 km
+        [50, 100, 150, 200].forEach((v) => {
+          if (v > yMax) return;
+          const y = H - (v / yMax) * H;
+          const gl = document.createElementNS(ns, "line");
+          gl.setAttribute("x1", 0);
+          gl.setAttribute("x2", W);
+          gl.setAttribute("y1", y);
+          gl.setAttribute("y2", y);
+          gl.setAttribute("stroke", "rgba(0,0,0,0.06)");
+          gl.setAttribute("stroke-width", "1");
+          svg.appendChild(gl);
+          const gt = document.createElementNS(ns, "text");
+          gt.setAttribute("x", W - 2);
+          gt.setAttribute("y", y - 2);
+          gt.setAttribute("text-anchor", "end");
+          gt.setAttribute("fill", "rgba(0,0,0,0.25)");
+          gt.setAttribute("font-size", "7");
+          gt.setAttribute("font-family", "Courier New");
+          gt.textContent = v + " km";
+          svg.appendChild(gt);
+        });
+
+        // AVG reference line with labelled background pill
+        const aY = H - (avgK / yMax) * H;
+        const al = document.createElementNS(ns, "line");
+        al.setAttribute("x1", 0);
+        al.setAttribute("x2", W);
+        al.setAttribute("y1", aY);
+        al.setAttribute("y2", aY);
+        al.setAttribute("stroke", "rgba(26,74,138,0.5)");
+        al.setAttribute("stroke-width", "1");
+        al.setAttribute("stroke-dasharray", "6 3");
+        svg.appendChild(al);
+
+        const ab = document.createElementNS(ns, "rect");
+        ab.setAttribute("x", W * 0.7 - 45);
+        ab.setAttribute("y", aY - 13);
+        ab.setAttribute("width", 90);
+        ab.setAttribute("height", 13);
+        ab.setAttribute("fill", "rgba(26,74,138,0.12)");
+        svg.appendChild(ab);
+
+        const at = document.createElementNS(ns, "text");
+        at.setAttribute("x", W * 0.7);
+        at.setAttribute("y", aY - 2);
+        at.setAttribute("text-anchor", "middle");
+        at.setAttribute("fill", "rgba(26,74,138,1)");
+        at.setAttribute("font-size", "10");
+        at.setAttribute("font-family", "Courier New");
+        at.setAttribute("font-weight", "bold");
+        at.textContent = "AVG " + avgK + " km/yr";
+        svg.appendChild(at);
+      }
+
+      // ═══════════════════════════════════════════════════════
+      // LAYOUT SYNC - called on load and every resize
+      // ═══════════════════════════════════════════════════════
+      function syncSize() {
+        const W =
+          document.documentElement.clientWidth || window.innerWidth || 900;
+        const H =
+          document.documentElement.clientHeight || window.innerHeight || 500;
+        if (W < 20 || H < 20) return;
+        document.getElementById("sheet").style.width = W + "px";
+        document.getElementById("sheet").style.height = H + "px";
+        animateBars();
+        renderHwBars(currentSort);
+        drawGrid();
+      }
+
+      // Wait for the browser to have a real layout before first render
+      function waitForLayout(cb) {
+        // Double rAF ensures styles are computed and elements have clientHeight
+        requestAnimationFrame(() => requestAnimationFrame(cb));
+      }
+
+      function fullRender() {
+        const W =
+          document.documentElement.clientWidth || window.innerWidth || 900;
+        const H =
+          document.documentElement.clientHeight || window.innerHeight || 500;
+        if (W < 20 || H < 20) return;
+        document.getElementById("sheet").style.width = W + "px";
+        document.getElementById("sheet").style.height = H + "px";
+        // Draw grid first so SVG dimensions are ready
+        drawGrid();
+        // Animate bars
+        animateBars();
+        // Render corridor bars — hwList.clientHeight is now non-zero
+        renderHwBars(currentSort);
+      }
+
+      waitForLayout(fullRender);
+
+      if (window.ResizeObserver) {
+        new ResizeObserver(() => waitForLayout(fullRender)).observe(
+          document.documentElement,
+        );
+      }
+      window.addEventListener("resize", () => waitForLayout(fullRender));
+
+      // One deferred redraw after animations settle (grid line alignment)
+      waitForLayout(() => setTimeout(drawGrid, 1000));
+    </script>
+  </body>
+</html>
